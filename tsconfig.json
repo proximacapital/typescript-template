@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "target": "ESNEXT",
+        "module": "commonjs",
+        "strict": true,
+        "noUnusedLocals": false,
+        "outDir": "./Dist",
+        "removeComments": false,
+        "preserveConstEnums": true,
+        "inlineSourceMap": true,
+        "declaration": true,
+        "baseUrl": ".",
+        "paths": {},
+        "moduleResolution": "node",
+        "esModuleInterop": true
+    }
+}
