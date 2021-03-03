@@ -13,5 +13,9 @@
         "paths": {},
         "moduleResolution": "node",
         "esModuleInterop": true
-    }
+    },
+    "include": ["Src", "Test"
+    ],
+    "exclude": [
+    ]
 }
