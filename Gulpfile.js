@@ -134,33 +134,7 @@ gulp.task("code-coverage", gulp.series(["deprecated", "coverage"]));
 // ---------------------------------------------------------------------------------------------------------------------
 gulp.task("start", (done) =>
 {
-    // BLM - below is the gulp error dependent crash handler
-    /*
-        NOTES: Until such time that graceful stopping has been implemented in the app,
-        this is the best we can do.
-        Research has shown that having an ExitHandler.ts with process.on(event) catchers
-        are the best way to handle SIGINT, uncaughtExceptions, and the likes.
-    */
-    exec(`node ${DistFolder}/Src/App.js`, {maxBuffer: 1024 * 1_024_000}, (error, sout, serr) =>
-    {
-        serr && console.error(serr);
-        if (error.code || error.signal)
-        {
-            console.error(error);
-            exec(`node ${DistFolder}/Src/CleanUp.js`, (error, sout, serr) =>
-            {
-                serr && console.error(serr);
-                done(); // Completes the gulp task
-                process.exit(0); // required since gulp hangs even after exiting the task gracefully
-            }).stdout.pipe(process.stdout);
-        }
-    }).stdout.pipe(process.stdout);
-
-    process.on("SIGINT", () => {
-        console.log("SIGINT triggered.\n*** Maybe shown twice because it exits both gulp child_process and the app***");
-        // This traps SIGINT inside the exec and does not cause it to call process.exit(),
-        // but instead calls process.exit(1) on App.ts
-    });
+    execTask(`node ${DistFolder}/Src/App.js`, done);
 });
 
 // ---------------------------------------------------------------------------------------------------------------------
