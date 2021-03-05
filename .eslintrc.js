@@ -60,7 +60,6 @@ module.exports = {
                         "public-static-method",
                         "public-method",
                     ],
-                    order: "alphabetically",
                 },
             }
         ],
