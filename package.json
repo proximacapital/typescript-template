@@ -7,8 +7,8 @@
   },
   "homepage": "https://github.com/proximacapital/{REPO_NAME}/blob/master/README.md",
   "engines": {
-    "node": "14.13.1",
-    "npm": ">= 6.12.0"
+    "node": "16.2.0",
+    "npm": ">= 7.13.0"
   },
   "scripts": {},
   "dependencies": {
