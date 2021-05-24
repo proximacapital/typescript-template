@@ -11,6 +11,7 @@ module.exports = {
         "eslint-plugin-import",
         "eslint-plugin-unicorn",
         "import-newlines",
+        "typescript-sort-keys",
     ],
     extends: ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
     rules: {
@@ -31,7 +32,7 @@ module.exports = {
                 }
             }
         ],
-        "@typescript-eslint/member-ordering": [                                                             // Grouping of similar properties together 
+        "@typescript-eslint/member-ordering": [                                                             // Grouping of similar properties together
             "error",
             {
                 default: {
@@ -97,6 +98,7 @@ module.exports = {
         "@typescript-eslint/no-non-null-assertion": "off",                                                  // Disallows usage of "!" e.g: lUndefined!;
         "@typescript-eslint/no-unused-vars": ["error", { "ignoreRestSiblings": true, "varsIgnorePattern": "^__" }],     // Disallows unused vars, unless __Type;
         "@typescript-eslint/prefer-nullish-coalescing": "error",                                            // Prefer "??" over "||", so we don't do a falsy check
+        "@typescript-eslint/prefer-readonly": ["error", { "onlyInlineLambdas": true }],                     // Prefer readonly private members where possible
         "@typescript-eslint/quotes": ["error", "double", { "allowTemplateLiterals": true }],                // Use "" quotes instead of '', or ``
         "@typescript-eslint/type-annotation-spacing": "error",                                              // const foo: number, space after ":"
         "@typescript-eslint/switch-exhaustiveness-check": "error",                                          // Requires all branches to be covered or a default
@@ -143,6 +145,7 @@ module.exports = {
                 "variableDeclarationIgnoreFunction": true
             }
         ],
+        "typescript-sort-keys/string-enum": ["error", "asc", { "caseSensitive": true }],                    // Sort string enums alphabetically
         "arrow-parens": ["error", "always"],                                                                // Force parens around arrow arguments
         "brace-style": ["error", "allman", { "allowSingleLine": true }],                                    // Parenthetically correct braces
         "comma-dangle": [                                                                                   // Force dangling commas if }/]/) appears on newline
