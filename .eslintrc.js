@@ -10,8 +10,9 @@ module.exports = {
         "@typescript-eslint/tslint",
         "eslint-plugin-import",
         "eslint-plugin-unicorn",
+        "import-newlines",
     ],
-    extends: ["eslint:recommended", "plugin:@typescript-eslint/recommended", "prettier/@typescript-eslint"],
+    extends: ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
     rules: {
         "@typescript-eslint/array-type": ["error", { "default": "array" }],                                 // Prefer number[] over Array<number>
         "@typescript-eslint/dot-notation": "error",                                                         // Disallow obj["prop"] access
@@ -74,6 +75,11 @@ module.exports = {
                 "selector": "typeAlias",
                 "format": ["PascalCase"],
                 "prefix": ["T", "__T"]
+            },
+            {
+                "selector": "enum",
+                "format": ["PascalCase"],
+                "prefix": ["E"]
             },
             {
                 "selector": "variableLike",
@@ -139,7 +145,16 @@ module.exports = {
         ],
         "arrow-parens": ["error", "always"],                                                                // Force parens around arrow arguments
         "brace-style": ["error", "allman", { "allowSingleLine": true }],                                    // Parenthetically correct braces
-        "comma-dangle": ["error", "always-multiline"],                                                      // Force last array entry to have trailing comma
+        "comma-dangle": [                                                                                   // Force dangling commas if }/]/) appears on newline
+            "error",
+            {
+                arrays: "always-multiline",
+                objects: "always-multiline",
+                imports: "always-multiline",
+                exports: "always-multiline",
+                functions: "always-multiline",
+            },
+        ],
         "function-paren-newline": ["error", "multiline-arguments"],                                         // Multiline functions must have close paren on newline
         "function-call-argument-newline": ["error", "consistent"],                                          // Multiline arguments must all be on newline
         "curly": ["error", "multi-line", "consistent"],                                                     // Always use curly unless if and else are one-line
@@ -154,7 +169,7 @@ module.exports = {
         "no-multiple-empty-lines": "error",                                                                 // Allow at most one empty line between code
         "no-trailing-spaces": "error",                                                                      // Strip whitespace after line ends
         "object-curly-spacing": ["error", "always"], // TODO: Test { a:0 }                                  // Requires spaces like: { a: 0 }
-        "one-var": ["error", "never"],                                                                      // Requires a keyword per declaraed var
+        "one-var": ["error", "never"],                                                                      // Requires a keyword per declared var
         "prefer-const": "error",                                                                            // If a var is not re-assigned, force const
         "spaced-comment": ["error", "always", { "markers": ["/"] }],                                        // Require a space after "//" like in this file
         "space-before-function-paren": ["error", "never"], "space-in-parens": ["error", "never"],           // func(x) vs func (x), we use no space
@@ -163,5 +178,30 @@ module.exports = {
         "keyword-spacing": "error",                                                                         // Require spaces before and after keywords (if, else)
         "import/no-default-export": "error",                                                                // Disallow default (unnamed) exports
         "key-spacing": "error",                                                                             // No space before colon in object literals
+        "no-fallthrough": "error",                                                                          // Require explicit comment when switch cases fall through
+        "import-newlines/enforce": [
+            "error",
+            {
+                "items": 6,
+                "max-len": 120,
+                "semi": false,
+            }
+        ],
+        "indent": [
+            "error",
+            4,
+            {
+                "SwitchCase": 1,
+                "ignoredNodes": [ "ArrowFunctionExpression", "LogicalExpression", "SwitchCase[consequent]" ]
+            },
+        ],
+        /*
+        * Tools for AST:
+        * - AST query language: https://estools.github.io/esquery/
+        * - AST explorer: https://astexplorer.net/
+        * - ESLint on Selectors: https://eslint.org/docs/4.0.0/developer-guide/selectors
+        * - ESLint Indent: https://eslint.org/docs/rules/indent
+        * - Syntax Tree Format: https://esprima.readthedocs.io/en/latest/syntax-tree-format.html
+        */
     },
 };
