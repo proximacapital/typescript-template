@@ -145,6 +145,11 @@ gulp.task("build-test", gulp.series(
     "build",
     "tests-all",
 ));
+gulp.task("build-check-test", gulp.series(
+    "build",
+    "lint-check",
+    "tests-all",
+));
 
 // Helper functions:
 function execTask(command, done)
