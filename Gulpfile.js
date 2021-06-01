@@ -40,7 +40,6 @@ gulp.task("compile", (done) => execTask(_TSC_, done));
 // ---------------------------------------------------------------------------------------------------------------------
 gulp.task("copy", gulp.parallel(
     () => Root("/tsconfig.json").pipe(DistDest()),
-    () => Root("/tsconfig-paths-bootstrap.js").pipe(DistDest()),
 
     () => Src("/Config/**/*").pipe(DistDest("/Src/Config")),
     () => Src("/Config/**/.*").pipe(DistDest("/Src/Config"))
@@ -134,7 +133,7 @@ gulp.task("code-coverage", gulp.series(["deprecated", "coverage"]));
 // ---------------------------------------------------------------------------------------------------------------------
 gulp.task("start", (done) =>
 {
-    execTask(`node ${DistFolder}/Src/App.js`, done);
+    execTask(`node -r tsconfig-paths/register ${DistFolder}/Src/App.js`, done);
 });
 
 // ---------------------------------------------------------------------------------------------------------------------
