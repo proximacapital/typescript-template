@@ -1,3 +1,10 @@
 import test from "ava";
+import { Class } from "Src/Class";
 
-test.todo("my first test");
+test("Example Test", (t: any) =>
+{
+    const lClass: Class = new Class();
+    lClass.LogHelloWorld();
+
+    t.pass();
+});
