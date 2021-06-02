@@ -12,10 +12,9 @@ const DistFolder  = "./Dist";
 const SrcFolder   = "./Src";
 const TestFolder  =  `${DistFolder}/Test`;
 
-const _PATHS_     = `-r ${DistFolder}/tsconfig-paths-bootstrap.js`;
-const _AVA_       = `env ENV__LOGGING_LEVEL=OFF node ${RootFolder}/node_modules/ava/cli.js --node-arguments="${_PATHS_}"`;
+const _AVA_       = `env ENV__LOGGING_LEVEL=OFF node ${RootFolder}/node_modules/ava/cli.js`;
 const _NYC_       = `node ./node_modules/nyc/bin/nyc.js --reporter=lcov --reporter=html --reporter=text-summary`;
-const _TSC_       = `${RootFolder}/node_modules/typescript/bin/tsc`;
+const _TSC_       = `${RootFolder}/node_modules/ttypescript/bin/tsc`;
 const _ESLINT_    = `node ${RootFolder}/node_modules/eslint/bin/eslint.js`
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -41,7 +40,6 @@ gulp.task("compile", (done) => execTask(_TSC_, done));
 // ---------------------------------------------------------------------------------------------------------------------
 gulp.task("copy", gulp.parallel(
     () => Root("/tsconfig.json").pipe(DistDest()),
-    () => Root("/tsconfig-paths-bootstrap.js").pipe(DistDest()),
 
     () => Src("/Config/**/*").pipe(DistDest("/Src/Config")),
     () => Src("/Config/**/.*").pipe(DistDest("/Src/Config"))
@@ -135,7 +133,7 @@ gulp.task("code-coverage", gulp.series(["deprecated", "coverage"]));
 // ---------------------------------------------------------------------------------------------------------------------
 gulp.task("start", (done) =>
 {
-    execTask(`node ${_PATHS_} ${DistFolder}/Src/App.js`, done);
+    execTask(`node ${DistFolder}/Src/App.js`, done);
 });
 
 // ---------------------------------------------------------------------------------------------------------------------

@@ -9,12 +9,20 @@
         "preserveConstEnums": true,
         "inlineSourceMap": true,
         "declaration": true,
-        "baseUrl": ".",
-        "paths": {},
+        "resolveJsonModule": true,
+        "baseUrl": "./",
+        "paths": {
+            "@Root": ["./*"],
+            "@Src": ["Src/*"],
+            "@Test": ["Test/*"]
+        },
+        "plugins": [
+            { "transform": "typescript-transform-paths" },
+            { "transform": "typescript-transform-paths", "afterDeclarations": true }
+        ],
         "moduleResolution": "node",
         "esModuleInterop": true
     },
-    "paths": {},
     "include": ["Src", "Test"],
     "exclude": []
 }
