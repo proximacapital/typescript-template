@@ -98,7 +98,7 @@ module.exports = {
         "@typescript-eslint/no-non-null-assertion": "off",                                                  // Disallows usage of "!" e.g: lUndefined!;
         "@typescript-eslint/no-unused-vars": ["error", { "ignoreRestSiblings": true, "varsIgnorePattern": "^__" }],     // Disallows unused vars, unless __Type;
         "@typescript-eslint/prefer-nullish-coalescing": "error",                                            // Prefer "??" over "||", so we don't do a falsy check
-        "@typescript-eslint/prefer-readonly": ["error", { "onlyInlineLambdas": true }],                     // Prefer readonly private members where possible
+        "@typescript-eslint/prefer-readonly": "error",                                                      // Prefer readonly private members where possible
         "@typescript-eslint/quotes": ["error", "double", { "allowTemplateLiterals": true }],                // Use "" quotes instead of '', or ``
         "@typescript-eslint/type-annotation-spacing": "error",                                              // const foo: number, space after ":"
         "@typescript-eslint/switch-exhaustiveness-check": "error",                                          // Requires all branches to be covered or a default
