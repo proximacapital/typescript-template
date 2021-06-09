@@ -95,6 +95,7 @@ module.exports = {
         "@typescript-eslint/no-empty-function": "off",                                                      // Disallow empty functions, including callbacks
         "@typescript-eslint/no-explicit-any": "off",                                                        // Disallow use of the "any" type
         "@typescript-eslint/no-inferrable-types": "off",                                                    // Disallows const lNum: number = 0;
+        "@typescript-eslint/strict-boolean-expressions": "error",                                           // Disallows coercing non-booleans to boolean
         "@typescript-eslint/no-non-null-assertion": "off",                                                  // Disallows usage of "!" e.g: lUndefined!;
         "@typescript-eslint/no-unused-vars": ["error", { "ignoreRestSiblings": true, "varsIgnorePattern": "^__" }],     // Disallows unused vars, unless __Type;
         "@typescript-eslint/prefer-nullish-coalescing": "error",                                            // Prefer "??" over "||", so we don't do a falsy check
