@@ -208,4 +208,5 @@ module.exports = {
         * - Syntax Tree Format: https://esprima.readthedocs.io/en/latest/syntax-tree-format.html
         */
     },
+    reportUnusedDisableDirectives: true,
 };
