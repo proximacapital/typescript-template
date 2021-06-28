@@ -42,7 +42,7 @@ gulp.task("copy", gulp.parallel(
     () => Root("/tsconfig.json").pipe(DistDest()),
 
     () => Src("/Config/**/*").pipe(DistDest("/Src/Config")),
-    () => Src("/Config/**/.*").pipe(DistDest("/Src/Config"))
+    () => Src("/Config/**/.*").pipe(DistDest("/Src/Config")),
 ));
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -50,20 +50,6 @@ gulp.task("build", gulp.series(
     "clean",
     "compile",
     "copy"
-));
-gulp.task("deprecated", done =>
-    {
-        console.error("\x1b[31m%s\x1b[0m", "THIS TASK IS DEPRECATED");
-        console.error("\x1b[31m%s\x1b[0m", "THIS TASK IS DEPRECATED");
-        console.error("\x1b[31m%s\x1b[0m", "THIS TASK IS DEPRECATED");
-        console.error("\x1b[31m%s\x1b[0m", "THIS TASK IS DEPRECATED");
-        console.error("\x1b[31m%s\x1b[0m", "THIS TASK IS DEPRECATED");
-        done();
-    }
-);
-gulp.task("__build", gulp.series(
-    "deprecated",
-    "build",
 ));
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -128,7 +114,6 @@ gulp.task("test", done =>
 
 // ---------------------------------------------------------------------------------------------------------------------
 gulp.task("coverage", done => execTask(`${_NYC_} ${getAvaCommand(TestFolder)}`, done));
-gulp.task("code-coverage", gulp.series(["deprecated", "coverage"]));
 
 // ---------------------------------------------------------------------------------------------------------------------
 gulp.task("start", (done) =>
