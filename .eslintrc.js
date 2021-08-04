@@ -14,6 +14,18 @@ module.exports = {
         "typescript-sort-keys",
     ],
     extends: ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
+    overrides: [
+        {
+            files: ["*.js"],
+            rules: {
+                "@typescript-eslint/tslint/config": "off",
+                "@typescript-eslint/typedef": "off",
+                "no-undef": "off",
+                "@typescript-eslint/no-var-requires": "off",
+            },
+        }
+    ],
+    ignorePatterns: [".eslintrc.js", "Gulpfile.js"],
     rules: {
         "@typescript-eslint/array-type": ["error", { "default": "array" }],                                 // Prefer number[] over Array<number>
         "@typescript-eslint/dot-notation": "error",                                                         // Disallow obj["prop"] access
@@ -55,6 +67,7 @@ module.exports = {
 
                         "private-static-method",
                         "private-method",
+                        "protected-static-method",
                         "protected-method",
 
                         "public-static-field",
