@@ -1,0 +1,14 @@
+# Proxima Dependabot Config with support for private packages
+
+version: 2
+# registries:
+#   proxima-npm:
+#     type: npm-registry
+#     url: https://npm.pkg.github.com
+#     token: ${{secrets.PACKAGE_TOKEN}}
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    # registries: "*"
+    schedule:
+      interval: "daily"
