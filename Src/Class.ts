@@ -1,4 +1,3 @@
-
 export class Class
 {
     public constructor()
@@ -6,6 +5,7 @@ export class Class
 
     public LogHelloWorld(): void
     {
+        // eslint-disable-next-line no-console
         console.log("HELLO WORLD");
     }
 }
