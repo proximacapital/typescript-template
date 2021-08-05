@@ -13,7 +13,6 @@
   "scripts": {},
   "dependencies": {
     "lodash": "4.17.20",
-    "tsconfig-paths": "3.9.0"
   },
   "devDependencies": {
     "@types/lodash": "4.14.167",
