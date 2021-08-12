@@ -213,6 +213,7 @@ module.exports = {
                 "ignoredNodes": [ "ArrowFunctionExpression", "LogicalExpression", "SwitchCase[consequent]" ]
             },
         ],
+        "@typescript-eslint/no-explicit-any": ["warn", { "fixToUnknown": true }],
         /*
         * Tools for AST:
         * - AST query language: https://estools.github.io/esquery/
