@@ -26,6 +26,8 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - name: Install dependencies
+      env:
+        PROXIMA_PACKAGE_TOKEN: ${{ secrets.PROXIMA_PACKAGE_TOKEN }}
       run: npm ci
     - name: Lint check
       run: gulp lint-check      
