@@ -1,1 +1,1 @@
-module.exports = require('@proximacapital/infrastructure/eslint-config');
+module.exports = require('@proximacapital/eslint-config/index.js');
