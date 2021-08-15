@@ -96,20 +96,62 @@ function getArgs()
 gulp.task("test", done =>
 {
     const pathArgs = getArgs()["path"];
+    const fileArg = getArgs()["file"];
 
-    if (pathArgs === undefined)
-    {
-        execTask(getAvaCommand(TestFolder) + getAvaArgs("match") + getAvaArgs("serial"), done);
-    }
-    else
+    if (pathArgs !== undefined)
     {
         const allDone = _.after(pathArgs.length, done);
-
         pathArgs.forEach((aPath) =>
         {
             execTask(getAvaCommand(TestFolder + "/" + aPath) + getAvaArgs("match") + getAvaArgs("serial"), allDone);
         });
     }
+    else if (fileArg !== undefined)
+    {
+        const regex = new RegExp(`^.*(${fileArg})\\.test\\.js$`);
+        const matchingFiles = [];
+        getAllTestFiles(TestFolder, ".test.js").forEach(file => {
+            if (regex.test(file)) {
+                matchingFiles.push(file);
+            }
+        });
+        if (matchingFiles.length === 0) {
+            done("Could not find any matching test.js files");
+            return;
+        }
+        execTask(_AVA_ +  " " + matchingFiles.join(" "), done);
+    }
+    else
+    {
+        execTask(getAvaCommand(TestFolder) + getAvaArgs("match") + getAvaArgs("serial"), done);
+    }
+});
+
+// ---------------------------------------------------------------------------------------------------------------------
+gulp.task("demo", done =>
+{
+    // get file name args
+    const fileArgs = getArgs()["file"];
+    if (!fileArgs || fileArgs.length <= 0) {
+        done("ERROR: Must supply file name list via `--file fileName`");
+        return;
+    }
+
+    // filter demos to those matching file input
+    const regex = new RegExp(`^.*(${fileArgs.join('|')})\\.demo\\.js$`);
+    const matchingFiles = [];
+    getAllTestFiles(TestFolder, ".demo.js").forEach(file => {
+        if (regex.test(file)) {
+            matchingFiles.push(file);
+        }
+    });
+    if (matchingFiles.length === 0) {
+        done("Could not find any matching demo.js files");
+        return;
+    }
+
+    // run demos
+    execTask(_AVA_ +  " --fail-fast " + matchingFiles.join(" "), done);
 });
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -180,9 +222,9 @@ function getAvaCommand(aDirectory)
 function getAvaArgs(aOption)
 {
     const optionArgs = getArgs()[aOption];
-    
+
     let args = "";
-    
+
     if ( optionArgs !== undefined)
     {
         if ( optionArgs.length === 0 )
