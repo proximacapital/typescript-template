@@ -95,31 +95,27 @@ function getArgs()
 // ---------------------------------------------------------------------------------------------------------------------
 gulp.task("test", done =>
 {
-    const pathArgs = getArgs()["path"];
-    const fileArg = getArgs()["file"];
+    const lPathArgs = getArgs()["path"];
+    const lFileArgs = getArgs()["file"];
 
-    if (pathArgs !== undefined)
+    if (lPathArgs !== undefined)
     {
-        const allDone = _.after(pathArgs.length, done);
-        pathArgs.forEach((aPath) =>
+        const allDone = _.after(lPathArgs.length, done);
+        lPathArgs.forEach((aPath) =>
         {
             execTask(getAvaCommand(TestFolder + "/" + aPath) + getAvaArgs("match") + getAvaArgs("serial"), allDone);
         });
     }
-    else if (fileArg !== undefined)
+    else if (lFileArgs !== undefined)
     {
-        const regex = new RegExp(`^.*(${fileArg})\\.test\\.js$`);
-        const matchingFiles = [];
-        getAllTestFiles(TestFolder, ".test.js").forEach(file => {
-            if (regex.test(file)) {
-                matchingFiles.push(file);
-            }
-        });
-        if (matchingFiles.length === 0) {
+        const lMatchingFiles = getMatchingFiles(lFileArgs, "test");
+        if (lMatchingFiles.length === 0)
+        {
             done("Could not find any matching test.js files");
             return;
         }
-        execTask(_AVA_ +  " " + matchingFiles.join(" "), done);
+
+        execTask(_AVA_ +  " " + lMatchingFiles.join(" "), done);
     }
     else
     {
@@ -131,27 +127,22 @@ gulp.task("test", done =>
 gulp.task("demo", done =>
 {
     // get file name args
-    const fileArgs = getArgs()["file"];
-    if (!fileArgs || fileArgs.length <= 0) {
+    const lFileArgs = getArgs()["file"];
+    if (!lFileArgs || lFileArgs.length <= 0) {
         done("ERROR: Must supply file name list via `--file fileName`");
         return;
     }
 
     // filter demos to those matching file input
-    const regex = new RegExp(`^.*(${fileArgs.join('|')})\\.demo\\.js$`);
-    const matchingFiles = [];
-    getAllTestFiles(TestFolder, ".demo.js").forEach(file => {
-        if (regex.test(file)) {
-            matchingFiles.push(file);
-        }
-    });
-    if (matchingFiles.length === 0) {
+    const lMatchingFiles = getMatchingFiles(lFileArgs, "demo");
+    if (lMatchingFiles.length === 0)
+    {
         done("Could not find any matching demo.js files");
         return;
     }
 
     // run demos
-    execTask(_AVA_ +  " --fail-fast " + matchingFiles.join(" "), done);
+    execTask(_AVA_ +  " --fail-fast " + lMatchingFiles.join(" "), done);
 });
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -186,6 +177,19 @@ function execTask(command, done)
             done(error);
         }
     ).stdout.pipe(process.stdout);
+}
+
+function getMatchingFiles(aFileArgs, aFileType)
+{
+    // filter files to those matching requested arguments
+    const lRegex = new RegExp(`^.*(${aFileArgs.join('|')})\\.${aFileType}\\.js$`);
+    const lMatchingFiles = [];
+    getAllTestFiles(TestFolder, `.${aFileType}.js`).forEach(aFile =>
+    {
+        if (lRegex.test(aFile)) { lMatchingFiles.push(aFile); }
+    });
+
+    return lMatchingFiles;
 }
 
 function getAllTestFiles(aDirectory)
