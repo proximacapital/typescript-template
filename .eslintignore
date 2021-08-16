@@ -1,9 +1,0 @@
-.github
-bin
-coverage
-Dist
-Docker
-Logs
-node_modules
-Routes
-Shell

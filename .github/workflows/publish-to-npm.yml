@@ -1,13 +1,9 @@
-name: Node.js CI
+name: Publish Release
 
-on: 
-  push:
-    branches:
-      - master
-      - dev
-      - staging
-      - prod
-  pull_request:
+on:
+  release:
+    types:
+      - published
 
 jobs:
   build:
@@ -16,7 +12,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-      with: 
+      with:
           fetch-depth: 0
     - name: Load .nvmrc
       run: echo ::set-output name=NVMRC::$(cat .nvmrc)
@@ -27,15 +23,15 @@ jobs:
         node-version: '${{ steps.nvm.outputs.NVMRC }}'
     - name: Install dependencies
       env:
-        PROXIMA_PACKAGE_TOKEN: ${{ secrets.PROXIMA_PACKAGE_TOKEN }}
+        PROXIMA_PACKAGE_TOKEN: ${{ secrets.PACKAGE_TOKEN }}
       run: npm ci
     - name: Lint check
-      run: gulp lint-check      
+      run: gulp lint-check
     - name: Build
       run: gulp build
     - name: Test
-      run: gulp coverage
-    # - name: CodeClimate Upload
-    #   uses: paambaati/codeclimate-action@v2.7.4
-    #   env:
-    #     CC_TEST_REPORTER_ID: ${{ secrets.CODECLIMATE_TOKEN }}
+      run: gulp test
+    - name: Publish Package
+      env:
+        PROXIMA_PACKAGE_TOKEN: ${{ secrets.PACKAGE_TOKEN }}
+      run: npm publish
