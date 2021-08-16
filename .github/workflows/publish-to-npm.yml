@@ -1,0 +1,37 @@
+name: Publish Release
+
+on:
+  release:
+    types:
+      - published
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+          fetch-depth: 0
+    - name: Load .nvmrc
+      run: echo ::set-output name=NVMRC::$(cat .nvmrc)
+      id: nvm
+    - name: Use Node
+      uses: actions/setup-node@v1
+      with:
+        node-version: '${{ steps.nvm.outputs.NVMRC }}'
+    - name: Install dependencies
+      env:
+        PROXIMA_PACKAGE_TOKEN: ${{ secrets.PACKAGE_TOKEN }}
+      run: npm ci
+    - name: Lint check
+      run: gulp lint-check
+    - name: Build
+      run: gulp build
+    - name: Test
+      run: gulp test
+    - name: Publish Package
+      env:
+        PROXIMA_PACKAGE_TOKEN: ${{ secrets.PACKAGE_TOKEN }}
+      run: npm publish
