@@ -1,1 +1,0 @@
-module.exports = require('@proximacapital/eslint-config/index.js');
