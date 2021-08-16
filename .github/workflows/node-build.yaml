@@ -4,8 +4,9 @@ on:
   push:
     branches:
       - master
-      - staging
       - dev
+      - staging
+      - prod
   pull_request:
 
 jobs:
@@ -13,18 +14,17 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [14.13.1, ^16.6]
-
     steps:
     - uses: actions/checkout@v2
       with: 
           fetch-depth: 0
-    - name: Use Node.js ${{ matrix.node-version }}
+    - name: Load .nvmrc
+      run: echo ::set-output name=NVMRC::$(cat .nvmrc)
+      id: nvm
+    - name: Setup Node
       uses: actions/setup-node@v1
       with:
-        node-version: ${{ matrix.node-version }}
+        node-version: '${{ steps.nvm.outputs.NVMRC }}'
     - name: Install dependencies
       env:
         PROXIMA_PACKAGE_TOKEN: ${{ secrets.PROXIMA_PACKAGE_TOKEN }}
