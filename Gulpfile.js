@@ -1,4 +1,3 @@
-/* eslint-disable */
 const fs    = require("fs");
 const path  = require("path");
 const _     = require("lodash");
@@ -55,6 +54,7 @@ gulp.task("build", gulp.series(
 // ---------------------------------------------------------------------------------------------------------------------
 gulp.task("lint-check", done => execTask(`${_ESLINT_} . --ext .ts`, done));
 gulp.task("lint-fix", done => execTask(`${_ESLINT_} . --ext .ts --fix`, done));
+gulp.task("lint", gulp.task("lint-check"));
 
 // ---------------------------------------------------------------------------------------------------------------------
 function getArgs()
@@ -166,6 +166,7 @@ gulp.task("build-check-test", gulp.series(
     "lint-check",
     "tests-all",
 ));
+gulp.task("build-lint-test", gulp.task("build-check-test"));
 
 // Helper functions:
 function execTask(command, done)
