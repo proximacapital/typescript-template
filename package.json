@@ -18,13 +18,14 @@
     "lint": "./node_modules/gulp/bin/gulp.js lint-check"
   },
   "eslintConfig": {
-    "extends": "./node_modules/@proximacapital/infrastructure/Src/Rules/eslint-config"
+    "extends": "./node_modules/@proximacapital/eslint-config"
   },
   "dependencies": {
     "lodash": "4.17.21"
   },
   "devDependencies": {
     "@proximacapital/infrastructure": "2.0.4",
+    "@proximacapital/eslint-config": "2.0.1",
     "@types/lodash": "4.14.172",
     "@typescript-eslint/eslint-plugin": "4.29.3",
     "@typescript-eslint/eslint-plugin-tslint": "4.29.3",
