@@ -1,11 +1,11 @@
 {
-    "name": "proximacapital-repo_name",
+    "name": "@proximacapital/zzz-repo-name-zzz",
     "version": "0.0.0",
     "repository": {
         "type": "git",
-        "url": "git+ssh://git@github.com:proximacapital/{repo_name}.git"
+        "url": "git+ssh://git@github.com:proximacapital/zzz-repo-name-zzz.git"
     },
-    "homepage": "https://github.com/proximacapital/{repo_name}/blob/prod/README.md",
+    "homepage": "https://github.com/proximacapital/zzz-repo-name-zzz/blob/prod/README.md",
     "engines": {
         "node": "^16.6.1",
         "npm": ">=7.20.0"
