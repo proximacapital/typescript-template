@@ -1,48 +1,48 @@
 {
-  "name": "proximacapital-repo_name",
-  "version": "1.0.0",
-  "repository": {
-    "type": "git",
-    "url": "git+ssh://git@github.com:proximacapital/{repo_name}.git"
-  },
-  "homepage": "https://github.com/proximacapital/{repo_name}/blob/master/README.md",
-  "engines": {
-    "node": "^16.6.1",
-    "npm": ">=7.20.0"
-  },
-  "files": [
-    "Dist"
-  ],
-  "scripts": {
-    "test": "./node_modules/gulp/bin/gulp.js test",
-    "lint": "./node_modules/gulp/bin/gulp.js lint-check"
-  },
-  "eslintConfig": {
-    "extends": "./node_modules/@proximacapital/eslint-config"
-  },
-  "dependencies": {
-    "lodash": "4.17.21"
-  },
-  "devDependencies": {
-    "@proximacapital/infrastructure": "3.0.4",
-    "@proximacapital/eslint-config": "2.0.1",
-    "@types/lodash": "4.14.172",
-    "@typescript-eslint/eslint-plugin": "4.33.0",
-    "@typescript-eslint/eslint-plugin-tslint": "4.33.0",
-    "@typescript-eslint/parser": "4.33.0",
-    "ava": "3.15.0",
-    "del": "6.0.0",
-    "eslint": "7.32.0",
-    "eslint-plugin-import": "2.24.2",
-    "eslint-plugin-import-newlines": "1.1.4",
-    "eslint-plugin-typescript-sort-keys": "1.8.0",
-    "eslint-plugin-unicorn": "35.0.0",
-    "gulp": "4.0.2",
-    "nyc": "15.1.0",
-    "ts-node": "10.2.1",
-    "tslint": "6.1.3",
-    "ttypescript": "1.5.12",
-    "typescript": "4.4.3",
-    "typescript-transform-paths": "3.3.1"
-  }
+    "name": "proximacapital-repo_name",
+    "version": "0.0.0",
+    "repository": {
+        "type": "git",
+        "url": "git+ssh://git@github.com:proximacapital/{repo_name}.git"
+    },
+    "homepage": "https://github.com/proximacapital/{repo_name}/blob/master/README.md",
+    "engines": {
+        "node": "^16.6.1",
+        "npm": ">=7.20.0"
+    },
+    "files": [
+        "Dist"
+    ],
+    "scripts": {
+        "test": "./node_modules/gulp/bin/gulp.js test",
+        "lint": "./node_modules/gulp/bin/gulp.js lint-check"
+    },
+    "eslintConfig": {
+        "extends": "./node_modules/@proximacapital/eslint-config"
+    },
+    "dependencies": {
+        "lodash": "4.17.21"
+    },
+    "devDependencies": {
+        "@proximacapital/infrastructure": "3.0.4",
+        "@proximacapital/eslint-config": "2.0.1",
+        "@types/lodash": "4.14.172",
+        "@typescript-eslint/eslint-plugin": "4.33.0",
+        "@typescript-eslint/eslint-plugin-tslint": "4.33.0",
+        "@typescript-eslint/parser": "4.33.0",
+        "ava": "3.15.0",
+        "del": "6.0.0",
+        "eslint": "7.32.0",
+        "eslint-plugin-import": "2.24.2",
+        "eslint-plugin-import-newlines": "1.1.4",
+        "eslint-plugin-typescript-sort-keys": "1.8.0",
+        "eslint-plugin-unicorn": "35.0.0",
+        "gulp": "4.0.2",
+        "nyc": "15.1.0",
+        "ts-node": "10.2.1",
+        "tslint": "6.1.3",
+        "ttypescript": "1.5.12",
+        "typescript": "4.4.3",
+        "typescript-transform-paths": "3.3.1"
+    }
 }
