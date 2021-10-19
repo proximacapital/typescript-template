@@ -15,6 +15,7 @@ const _AVA_       = `env ENV__LOGGING_LEVEL=OFF node ${RootFolder}/node_modules/
 const _NYC_       = `node ./node_modules/nyc/bin/nyc.js --reporter=lcov --reporter=html --reporter=text-summary`;
 const _TSC_       = `${RootFolder}/node_modules/ttypescript/bin/tsc`;
 const _ESLINT_    = `node ${RootFolder}/node_modules/eslint/bin/eslint.js`
+const _MDLINT_    = `node ${RootFolder}/node_modules/markdownlint-cli/markdownlint.js`
 
 // ---------------------------------------------------------------------------------------------------------------------
 const DistPath = (aPath = "") => { return DistFolder + aPath; }
@@ -52,8 +53,13 @@ gulp.task("build", gulp.series(
 ));
 
 // ---------------------------------------------------------------------------------------------------------------------
-gulp.task("lint-check", done => execTask(`${_ESLINT_} . --ext .ts`, done));
-gulp.task("lint-fix", done => execTask(`${_ESLINT_} . --ext .ts --fix`, done));
+gulp.task("eslint-check", done => execTask(`${_ESLINT_} .`, done));
+gulp.task("eslint-fix", done => execTask(`${_ESLINT_} . --fix`, done));
+gulp.task("mdlint-check", done => execTask(`${_MDLINT_} .`, done));
+gulp.task("mdlint-fix", done => execTask(`${_MDLINT_} . --fix`, done));
+
+gulp.task("lint-check", gulp.parallel("eslint-check", "mdlint-check"));
+gulp.task("lint-fix", gulp.parallel("eslint-fix", "mdlint-fix"));
 gulp.task("lint", gulp.task("lint-check"));
 
 // ---------------------------------------------------------------------------------------------------------------------
