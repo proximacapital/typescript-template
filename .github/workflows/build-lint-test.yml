@@ -1,12 +1,12 @@
-name: build-lint-test.yaml
+name: build-lint-test.yml
 
 on:
   push:
     branches:
-      - master
       - prod
       - stage
       - dev
+      - master
   pull_request:
 
 jobs:
@@ -14,11 +14,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@afe4af09a72596f47d806ee5f8b2674ec07fdc73
+    - name: Checkout Source
+      uses: actions/checkout@afe4af09a72596f47d806ee5f8b2674ec07fdc73
       with: 
           fetch-depth: 0
     - name: Load .nvmrc
-      run: echo ::set-output name=NVMRC::$(cat .nvmrc)
+      run: echo ::set-output name=NVMRC::"$(cat .nvmrc)"
       id: nvm
 
     - name: Setup Node '${{ steps.nvm.outputs.NVMRC }}'
@@ -31,11 +32,16 @@ jobs:
         PROXIMA_PACKAGE_TOKEN: ${{ secrets.GH_AUTH_TOKEN }}
       run: npm ci
 
-    - name: Lint check
-      run: gulp lint-check
-
     - name: Build
       run: gulp build
+
+    # NB: super-linter slim image is missing some languages
+    - name: Lint Code Base
+      uses: github/super-linter/slim@a2193cb9f6fcdd86cf4bd5646cc0a9fc33015d3a
+      env:
+        VALIDATE_ALL_CODEBASE: false
+        DEFAULT_BRANCH: prod
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Test
       run: gulp coverage

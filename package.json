@@ -26,8 +26,8 @@
         "lodash": "4.17.21"
     },
     "devDependencies": {
-        "@proximacapital/infrastructure": "3.0.4",
         "@proximacapital/eslint-config": "2.0.1",
+        "@proximacapital/infrastructure": "3.0.4",
         "@types/lodash": "4.14.172",
         "@typescript-eslint/eslint-plugin": "4.33.0",
         "@typescript-eslint/eslint-plugin-tslint": "4.33.0",
@@ -40,6 +40,7 @@
         "eslint-plugin-typescript-sort-keys": "1.8.0",
         "eslint-plugin-unicorn": "35.0.0",
         "gulp": "4.0.2",
+        "markdownlint": "0.24.0",
         "nyc": "15.1.0",
         "ts-node": "10.2.1",
         "tslint": "6.1.3",

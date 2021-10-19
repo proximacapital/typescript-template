@@ -1,4 +1,4 @@
-name: publish-release.yaml
+name: publish-release.yml
 
 on:
   release:
@@ -20,7 +20,7 @@ jobs:
         echo "Checking package.json version against tag..."
         TagVersion=${{ github.event.release.tag_name }}
         PackageJsonVersion=v$(sed 's/.*"version": "\(.*\)".*/\1/;t;d' ./package.json)
-        if [ $TagVersion != $PackageJsonVersion ];
+        if [ "$TagVersion" != "$PackageJsonVersion" ];
         then
           echo "Version $PackageJsonVersion does not match tag $TagVersion"
           exit 1
@@ -28,7 +28,7 @@ jobs:
         echo "package.json version matches tag: $TagVersion"
 
     - name: Load .nvmrc
-      run: echo ::set-output name=NVMRC::$(cat .nvmrc)
+      run: echo ::set-output name=NVMRC::"$(cat .nvmrc)"
       id: nvm
 
     - name: Setup Node
@@ -42,11 +42,11 @@ jobs:
         GH_AUTH_TOKEN: ${{ secrets.GH_AUTH_TOKEN }}
       run: npm ci
 
-    - name: Lint check
-      run: gulp lint-check
-
     - name: Build
       run: gulp build
+
+    - name: Lint check
+      run: gulp lint-check
 
     - name: Test
       run: gulp test
