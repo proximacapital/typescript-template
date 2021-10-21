@@ -18,6 +18,7 @@ jobs:
       uses: actions/checkout@afe4af09a72596f47d806ee5f8b2674ec07fdc73
       with: 
           fetch-depth: 0
+
     - name: Load .nvmrc
       run: echo ::set-output name=NVMRC::"$(cat .nvmrc)"
       id: nvm
@@ -29,7 +30,7 @@ jobs:
 
     - name: Install dependencies
       env:
-        PROXIMA_PACKAGE_TOKEN: ${{ secrets.GH_AUTH_TOKEN }}
+        PROXIMA_PACKAGE_TOKEN: ${{ secrets.PROXIMA_CI }}
       run: npm ci
 
     - name: Build
@@ -43,12 +44,7 @@ jobs:
         VALIDATE_JAVASCRIPT_STANDARD: false
         VALIDATE_JSCPD: false
         DEFAULT_BRANCH: prod
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ github.token }}
 
     - name: Test
       run: gulp coverage
-
-    # - name: CodeClimate Upload
-    #   uses: paambaati/codeclimate-action@7bcf9e73c0ee77d178e72c0ec69f1a99c1afc1f3
-    #   env:
-    #     CC_TEST_REPORTER_ID: ${{ secrets.CODECLIMATE_TOKEN }}

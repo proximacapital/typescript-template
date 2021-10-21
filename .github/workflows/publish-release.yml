@@ -38,8 +38,7 @@ jobs:
 
     - name: Install dependencies
       env:
-        PROXIMA_PACKAGE_TOKEN: ${{ secrets.GH_AUTH_TOKEN }}
-        GH_AUTH_TOKEN: ${{ secrets.GH_AUTH_TOKEN }}
+        PROXIMA_PACKAGE_TOKEN: ${{ secrets.PROXIMA_CI }}
       run: npm ci
 
     - name: Build
@@ -53,5 +52,5 @@ jobs:
 
     - name: Publish
       env:
-        PROXIMA_PACKAGE_TOKEN: ${{ secrets.GH_AUTH_TOKEN }}
+        PROXIMA_PACKAGE_TOKEN: ${{ secrets.PROXIMA_CI }}
       run: npm publish
