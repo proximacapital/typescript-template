@@ -38,7 +38,7 @@
     "del": "6.0.0",
     "eslint": "7.32.0",
     "eslint-plugin-import": "2.24.2",
-    "eslint-plugin-import-newlines": "1.1.4",
+    "eslint-plugin-import-newlines": "1.1.5",
     "eslint-plugin-typescript-sort-keys": "1.8.0",
     "eslint-plugin-unicorn": "35.0.0",
     "gulp": "4.0.2",
