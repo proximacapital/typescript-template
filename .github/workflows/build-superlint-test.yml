@@ -1,12 +1,7 @@
-name: build-lint-test.yml
+name: build-superlint-test.yml
 
 on:
-  push:
-    branches:
-      - prod
-      - stage
-      - dev
-      - master
+  pull_request:
 
 jobs:
   build:
@@ -35,8 +30,16 @@ jobs:
     - name: Build
       run: gulp build
 
-    - name: Lint
-      run: gulp lint
+    # NB: super-linter slim image is missing some languages
+    - name: Lint Code Base
+      uses: github/super-linter/slim@a2193cb9f6fcdd86cf4bd5646cc0a9fc33015d3a
+      env:
+        VALIDATE_ALL_CODEBASE: false
+        VALIDATE_JAVASCRIPT_STANDARD: false
+        VALIDATE_TYPESCRIPT_STANDARD: false
+        VALIDATE_JSCPD: false
+        DEFAULT_BRANCH: prod
+        GITHUB_TOKEN: ${{ github.token }}
 
     - name: Test
       run: gulp coverage
