@@ -44,12 +44,6 @@ jobs:
     - name: Build
       run: gulp build
 
-    - name: Lint check
-      run: gulp lint-check
-
-    - name: Test
-      run: gulp test
-
     - name: Publish
       env:
         PROXIMA_PACKAGE_TOKEN: ${{ secrets.PROXIMA_CI }}

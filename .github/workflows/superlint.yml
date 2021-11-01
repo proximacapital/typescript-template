@@ -1,4 +1,4 @@
-name: build-superlint-test.yml
+name: superlint.yml
 
 on:
   pull_request:
