@@ -26,7 +26,7 @@
             "@Src/*": ["Src/*"],
             "@Test/*": ["Test/*"],
             "@Root/*": ["./*"]
-        },
+        }
     },
     "include": ["Src", "Test"],
     "exclude": []
