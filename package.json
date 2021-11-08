@@ -14,6 +14,38 @@
   "files": [
     "Dist"
   ],
+  "ava": {
+    "extensions": [
+      "ts",
+      "js"
+    ],
+    "require": [
+      "ts-node/register"
+    ]
+  },
+  "c8": {
+    "check-coverage": false,
+    "all": true,
+    "include": [
+      "**/*.ts"
+    ],
+    "exclude": [
+      "coverage/**",
+      "node_modules/**",
+      "Dist/**",
+      "**/*.test.ts",
+      "**/*.demo.ts",
+      "**/*.perf.ts",
+      "**/*.network.ts",
+      "**/*.data.ts"
+    ],
+    "reporter": [
+      "html",
+      "lcov",
+      "text",
+      "text-summary"
+    ]
+  },
   "scripts": {
     "compile": "gulp build",
     "build": "gulp build",
@@ -29,12 +61,13 @@
   },
   "devDependencies": {
     "@proximacapital/eslint-config": "4.0.0",
-    "@proximacapital/infrastructure": "4.0.0",
+    "@proximacapital/infrastructure": "^4.1.0",
     "@types/lodash": "4.14.176",
     "@typescript-eslint/eslint-plugin": "5.2.0",
     "@typescript-eslint/eslint-plugin-tslint": "5.2.0",
     "@typescript-eslint/parser": "5.2.0",
     "ava": "3.15.0",
+    "c8": "7.10.0",
     "del": "6.0.0",
     "eslint": "8.1.0",
     "eslint-plugin-import": "2.25.2",
@@ -46,6 +79,7 @@
     "markdownlint-cli": "0.29.0",
     "nyc": "15.1.0",
     "ts-node": "10.4.0",
+    "tsconfig-paths": "3.11.0",
     "tslint": "6.1.3",
     "ttypescript": "1.5.12",
     "typescript": "4.4.4",
