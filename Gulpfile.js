@@ -109,7 +109,7 @@ gulp.task("test", done =>
         const allDone = _.after(lPathArgs.length, done);
         lPathArgs.forEach((aPath) =>
         {
-            execTask(getAvaCommand(TestFolder + "/" + aPath) +  getAvaArgs("serial"), allDone);
+            execTask(getAvaCommand(TestFolder + "/" + aPath) + getAvaArgs("match") + getAvaArgs("serial"), allDone);
         });
     }
     else if (lFileArgs !== undefined)
@@ -125,7 +125,7 @@ gulp.task("test", done =>
     }
     else
     {
-        execTask(getAvaCommand(TestFolder) + getAvaArgs("serial"), done);
+        execTask(getAvaCommand(TestFolder) + getAvaArgs("match") + getAvaArgs("serial"), done);
     }
 });
 
