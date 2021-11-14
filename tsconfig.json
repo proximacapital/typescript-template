@@ -1,4 +1,9 @@
 {
+    "ts-node": {
+        "require": [
+            "tsconfig-paths/register"
+        ]
+    },
     "compilerOptions": {
         "target": "ESNEXT",
         "module": "commonjs",
@@ -21,7 +26,7 @@
             "@Src/*": ["Src/*"],
             "@Test/*": ["Test/*"],
             "@Root/*": ["./*"]
-        },
+        }
     },
     "include": ["Src", "Test"],
     "exclude": []

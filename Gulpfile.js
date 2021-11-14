@@ -12,7 +12,7 @@ const SrcFolder   = "./Src";
 const TestFolder  =  `${DistFolder}/Test`;
 
 const _AVA_       = `env ENV__LOGGING_LEVEL=OFF node ${RootFolder}/node_modules/ava/cli.js`;
-const _NYC_       = `node ./node_modules/nyc/bin/nyc.js --reporter=lcov --reporter=html --reporter=text-summary`;
+const _C8_        = `node ./node_modules/c8/bin/c8.js --reporter=lcov --reporter=html --reporter=text-summary`;
 const _TSC_       = `${RootFolder}/node_modules/ttypescript/bin/tsc`;
 const _ESLINT_    = `node ${RootFolder}/node_modules/eslint/bin/eslint.js`
 const _MDLINT_    = `node ${RootFolder}/node_modules/markdownlint-cli/markdownlint.js`
@@ -152,7 +152,7 @@ gulp.task("demo", done =>
 });
 
 // ---------------------------------------------------------------------------------------------------------------------
-gulp.task("coverage", done => execTask(`${_NYC_} ${getAvaCommand(TestFolder)}`, done));
+gulp.task("coverage", done => execTask(`${_C8_} ${getAvaCommand(TestFolder)}`, done));
 
 // ---------------------------------------------------------------------------------------------------------------------
 gulp.task("start", (done) =>
