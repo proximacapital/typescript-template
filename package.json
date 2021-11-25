@@ -55,13 +55,13 @@
     "start": "node Dist/Src/App.js"
   },
   "eslintConfig": {
-    "extends": "./node_modules/@proximacapital/eslint-config"
+    "extends": "./node_modules/@proxima-oss/eslint-config"
   },
   "dependencies": {
     "lodash": "4.17.21"
   },
   "devDependencies": {
-    "@proximacapital/eslint-config": "4.0.2",
+    "@proxima-oss/eslint-config": "4.0.4",
     "@proximacapital/infrastructure": "4.3.1",
     "@types/lodash": "4.14.176",
     "@typescript-eslint/eslint-plugin": "5.2.0",
