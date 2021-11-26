@@ -7,6 +7,7 @@ on:
       - stage
       - dev
       - master
+  pull_request:
 
 jobs:
   build:
