@@ -1,4 +1,4 @@
-# proximacapital-{REPO_NAME}
+# proximacapital-zzz-repo-name-zzz
 
 This is meant to template a basic proxima capital typescript package. In
 particular, this repo demonstrates how to use `@proximacapital/infrastructure`
