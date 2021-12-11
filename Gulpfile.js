@@ -6,43 +6,38 @@ const cp    = require("child_process");
 const exec  = cp.exec;
 const del   = require("del");
 
-const RootFolder  = ".";
-const DistFolder  = "./Dist";
-const SrcFolder   = "./Src";
-const TestFolder  =  `${DistFolder}/Test`;
+const RootFolder  = path.join();
+const DistFolder  = path.join(RootFolder, "Dist");
+const SrcFolder   = path.join(RootFolder, "Src");
+const TestFolder  = path.join(DistFolder, "Test");
+const NodeBin     = path.join(RootFolder, "node_modules", ".bin");
 
-const _AVA_       = `env ENV__LOGGING_LEVEL=OFF node ${RootFolder}/node_modules/ava/cli.js`;
-const _C8_        = `node ./node_modules/c8/bin/c8.js --reporter=lcov --reporter=html --reporter=text-summary`;
-const _TSC_       = `${RootFolder}/node_modules/ttypescript/bin/tsc`;
-const _ESLINT_    = `node ${RootFolder}/node_modules/eslint/bin/eslint.js`
-const _MDLINT_    = `node ${RootFolder}/node_modules/markdownlint-cli/markdownlint.js`
+const _AVA_       = "env ENV__LOGGING_LEVEL=OFF " + path.join(NodeBin, "ava");
+const _C8_        = path.join(NodeBin, "c8") + " --reporter=lcov --reporter=html --reporter=text-summary";
+const _TSC_       = path.join(NodeBin, "ttsc");
+const _ESLINT_    = path.join(NodeBin, "eslint");
+const _MDLINT_    = path.join(NodeBin, "markdownlint");
 
 // ---------------------------------------------------------------------------------------------------------------------
-const DistPath = (aPath = "") => { return DistFolder + aPath; }
-const RootPath = (aPath = "") => { return RootFolder + aPath; }
-const SrcPath = (aPath = "") => { return SrcFolder + aPath; }
+const DistPath = (aPath = "") => path.join(DistFolder, aPath);
+const RootPath = (aPath = "") => path.join(RootFolder, aPath);
+const SrcPath = (aPath = "") => path.join(SrcFolder, aPath);
 
 const DistDest = (aPath = "") => { return gulp.dest(DistPath(aPath)); }
 const Root = (aPath = "") => { return gulp.src(RootPath(aPath)); }
 const Src = (aPath = "") => { return gulp.src(SrcPath(aPath)); }
 
 // ---------------------------------------------------------------------------------------------------------------------
-gulp.task("clean", done =>
-    {
-        del([DistPath("**/*")], { force: true });
-        done();
-    },
-);
+gulp.task("clean", done => execTask(_TSC_ + " -b --clean", done));
 
 // ---------------------------------------------------------------------------------------------------------------------
-gulp.task("compile", (done) => execTask(_TSC_, done));
+gulp.task("compile", (done) => execTask(_TSC_ + " -b", done));
 
 // ---------------------------------------------------------------------------------------------------------------------
 gulp.task("copy", gulp.parallel(
-    () => Root("/tsconfig.json").pipe(DistDest()),
-
-    () => Src("/Config/**/*").pipe(DistDest("/Src/Config")),
-    () => Src("/Config/**/.*").pipe(DistDest("/Src/Config")),
+    () => Root("tsconfig.json").pipe(DistDest()),
+    () => Src(path.join("Config", "**", "*")).pipe(DistDest("/Src/Config")),
+    () => Src(path.join("Config", "**", ".*")).pipe(DistDest("/Src/Config")),
 ));
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -105,7 +100,7 @@ gulp.task("test", done =>
         const allDone = _.after(lPathArgs.length, done);
         lPathArgs.forEach((aPath) =>
         {
-            execTask(getAvaCommand(TestFolder + "/" + aPath) + getAvaArgs("match") + getAvaArgs("serial"), allDone);
+            execTask(getAvaCommand(path.join(TestFolder, aPath)) + getAvaArgs("match") + getAvaArgs("serial"), allDone);
         });
     }
     else if (lFileArgs !== undefined)
@@ -117,7 +112,7 @@ gulp.task("test", done =>
             return;
         }
 
-        execTask(_AVA_ +  " " + lMatchingFiles.join(" "), done);
+        execTask(_AVA_ + " " + lMatchingFiles.join(" "), done);
     }
     else
     {
