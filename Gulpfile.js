@@ -1,10 +1,8 @@
-const fs    = require("fs");
-const path  = require("path");
-const _     = require("lodash");
-const gulp  = require("gulp");
-const cp    = require("child_process");
-const exec  = cp.exec;
-const del   = require("del");
+const fs            = require("fs");
+const path          = require("path");
+const _             = require("lodash");
+const gulp          = require("gulp");
+const {exec, spawn} = require("child_process");
 
 const RootFolder  = path.join();
 const DistFolder  = path.join(RootFolder, "Dist");
@@ -12,7 +10,7 @@ const SrcFolder   = path.join(RootFolder, "Src");
 const TestFolder  = path.join(DistFolder, "Test");
 const NodeBin     = path.join(RootFolder, "node_modules", ".bin");
 
-const _AVA_       = "env ENV__LOGGING_LEVEL=OFF " + path.join(NodeBin, "ava");
+const _AVA_       = path.join(NodeBin, "ava");
 const _C8_        = path.join(NodeBin, "c8") + " --reporter=lcov --reporter=html --reporter=text-summary";
 const _TSC_       = path.join(NodeBin, "ttsc");
 const _ESLINT_    = path.join(NodeBin, "eslint");
@@ -36,8 +34,8 @@ gulp.task("compile", (done) => execTask(_TSC_ + " -b", done));
 // ---------------------------------------------------------------------------------------------------------------------
 gulp.task("copy", gulp.parallel(
     () => Root("tsconfig.json").pipe(DistDest()),
-    () => Src(path.join("Config", "**", "*")).pipe(DistDest("/Src/Config")),
-    () => Src(path.join("Config", "**", ".*")).pipe(DistDest("/Src/Config")),
+    () => Src(path.join("Config", "**", "*")).pipe(DistDest(path.join("Src", "Config"))),
+    () => Src(path.join("Config", "**", ".*")).pipe(DistDest(path.join("Src", "Config"))),
 ));
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -94,14 +92,18 @@ gulp.task("test", done =>
 {
     const lPathArgs = getArgs()["path"];
     const lFileArgs = getArgs()["file"];
+    process.env.ENV__LOGGING_LEVEL = "OFF";
+    let lArgs = [];
 
     if (lPathArgs !== undefined)
     {
         const allDone = _.after(lPathArgs.length, done);
         lPathArgs.forEach((aPath) =>
         {
-            execTask(getAvaCommand(path.join(TestFolder, aPath)) + getAvaArgs("match") + getAvaArgs("serial"), allDone);
+            lArgs = lArgs.concat(getAllTestFiles(path.join(TestFolder, aPath)))
         });
+        lArgs.push("--match");
+        lArgs.push("--serial");
     }
     else if (lFileArgs !== undefined)
     {
@@ -112,12 +114,13 @@ gulp.task("test", done =>
             return;
         }
 
-        execTask(_AVA_ + " " + lMatchingFiles.join(" "), done);
+        lArgs = lMatchingFiles;
     }
     else
     {
-        execTask(getAvaCommand(TestFolder) + getAvaArgs("match") + getAvaArgs("serial"), done);
+        lArgs = [...getAllTestFiles(TestFolder), "--serial", "--match"];
     }
+    spawnTask(_AVA_, done, lArgs);
 });
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -139,7 +142,8 @@ gulp.task("demo", done =>
     }
 
     // run demos
-    execTask(_AVA_ +  " --fail-fast " + lMatchingFiles.join(" "), done);
+    lMatchingFiles.unshift("--fail-fast");
+    spawnTask(_AVA_, done, lMatchingFiles);
 });
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -166,6 +170,26 @@ gulp.task("build-check-test", gulp.series(
 gulp.task("build-lint-test", gulp.task("build-check-test"));
 
 // Helper functions:
+function spawnTask(command, done, args)
+{
+    let lCP;
+    if (args !== undefined)
+    {
+        lCP = spawn(command, args, { stdio: "inherit" });
+    } 
+    else
+    {
+        lCP = spawn(command, { stdio: "inherit" });
+    }
+    
+    lCP.on("error", (err) =>
+    {
+        console.error("Failed to start subprocess.");
+        done(err);
+    });
+    lCP.on("exit", () => done());
+}
+
 function execTask(command, done)
 {
     exec(command, (error, sout, serr) =>
@@ -190,9 +214,10 @@ function getMatchingFiles(aFileArgs, aFileType)
     return lMatchingFiles;
 }
 
-function getAllTestFiles(aDirectory)
+function getAllTestFiles(aDirectory, aFilter)
 {
     const lFiles = [];
+    aFilter = aFilter || "test.js" 
     getTestsFromDir(aDirectory);
 
     function getTestsFromDir(aDirectory)
@@ -206,7 +231,7 @@ function getAllTestFiles(aDirectory)
             {
                 getTestsFromDir(lFilePath);
             }
-            else if (lFileName.includes("test.js"))
+            else if (lFileName.includes(aFilter))
             {
                 lFiles.push(lFilePath);
             }
