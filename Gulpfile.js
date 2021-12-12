@@ -182,23 +182,10 @@ function spawnTask(command, done, args)
         lCP = spawn(command, { stdio: "inherit" });
     }
     
-    lCP.on("error", (err) =>
-    {
-        console.error("Failed to start subprocess.");
-        done(err);
-    });
+    lCP.on("error", done);
 
     // catch non-zero exit statii so that CI can understand when task fails
-    lCP.on("close", (code, signal) => {
-        if (code !== 0)
-        {
-            done(new Error(`Task failed with error code ${code}`));
-        }
-        else
-        {
-            done();
-        }
-    });
+    lCP.on("close", (code) => done(code !== 0 ? new Error(`Task returned exit code ${code}`) : code ));
 }
 
 function execTask(command, done)
