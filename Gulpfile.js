@@ -26,20 +26,20 @@ const Root = (aPath = "") => { return gulp.src(RootPath(aPath)); }
 const Src = (aPath = "") => { return gulp.src(SrcPath(aPath)); }
 
 // ---------------------------------------------------------------------------------------------------------------------
-gulp.task("clean", done => execTask(_TSC_ + " -b --clean", done));
+gulp.task("clean", done => spawnTask(_TSC_, done, ["--build", "--clean"]));
 
 // ---------------------------------------------------------------------------------------------------------------------
-gulp.task("compile", (done) => execTask(_TSC_ + " -b", done));
+gulp.task("compile", (done) => spawnTask(_TSC_, done, ["--build"]));
 
 // ---------------------------------------------------------------------------------------------------------------------
 gulp.task("copy", gulp.parallel(
     () => Root("tsconfig.json").pipe(DistDest()),
-    () => Src(path.join("Config", "**", "*")).pipe(DistDest(path.join("Src", "Config"))),
-    () => Src(path.join("Config", "**", ".*")).pipe(DistDest(path.join("Src", "Config"))),
+    () => Root(path.join("Config", "**", "*")).pipe(DistDest("Config")),
+    () => Root(path.join("Config", "**", ".*")).pipe(DistDest("Config")),
 ));
 
 // ---------------------------------------------------------------------------------------------------------------------
-gulp.task("build", gulp.series("compile", "copy"));
+gulp.task("build", gulp.parallel("compile", "copy"));
 
 // ---------------------------------------------------------------------------------------------------------------------
 gulp.task("eslint-check", done => execTask(`${_ESLINT_} .`, done));
@@ -187,7 +187,18 @@ function spawnTask(command, done, args)
         console.error("Failed to start subprocess.");
         done(err);
     });
-    lCP.on("exit", () => done());
+
+    // catch non-zero exit statii so that CI can understand when task fails
+    lCP.on("close", (code, signal) => {
+        if (code !== 0)
+        {
+            done(new Error(`Task failed with error code ${code}`));
+        }
+        else
+        {
+            done();
+        }
+    });
 }
 
 function execTask(command, done)
@@ -214,10 +225,10 @@ function getMatchingFiles(aFileArgs, aFileType)
     return lMatchingFiles;
 }
 
-function getAllTestFiles(aDirectory, aFilter)
+function getAllTestFiles(aDirectory, aFilter = "test.js")
 {
     const lFiles = [];
-    aFilter = aFilter || "test.js" 
+
     getTestsFromDir(aDirectory);
 
     function getTestsFromDir(aDirectory)
