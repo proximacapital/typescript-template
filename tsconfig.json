@@ -29,6 +29,6 @@
             "@Root/*": ["./*"]
         }
     },
-    "include": ["Src", "Test"],
+    "include": ["Src", "Test", "Config"],
     "exclude": []
 }
