@@ -52,10 +52,11 @@
     "build": "gulp build",
     "lint": "gulp lint",
     "test": "gulp test",
+    "coverage": "gulp coverage",
     "start": "node Dist/Src/App.js"
   },
   "eslintConfig": {
-    "extends": "./node_modules/@proxima-oss/eslint-config"
+    "extends": "@proxima-oss/eslint-config"
   },
   "dependencies": {
     "lodash": "4.17.21"

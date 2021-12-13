@@ -1,52 +1,45 @@
-const fs    = require("fs");
-const path  = require("path");
-const _     = require("lodash");
-const gulp  = require("gulp");
-const cp    = require("child_process");
-const exec  = cp.exec;
-const del   = require("del");
+const fs            = require("fs");
+const path          = require("path");
+const _             = require("lodash");
+const gulp          = require("gulp");
+const {exec, spawn} = require("child_process");
 
-const RootFolder  = ".";
-const DistFolder  = "./Dist";
-const SrcFolder   = "./Src";
-const TestFolder  =  `${DistFolder}/Test`;
+const RootFolder  = path.join();
+const DistFolder  = path.join(RootFolder, "Dist");
+const SrcFolder   = path.join(RootFolder, "Src");
+const TestFolder  = path.join(DistFolder, "Test");
+const NodeBin     = path.join(RootFolder, "node_modules", ".bin");
 
-const _AVA_       = `env ENV__LOGGING_LEVEL=OFF node ${RootFolder}/node_modules/ava/cli.js`;
-const _C8_        = `node ./node_modules/c8/bin/c8.js --reporter=lcov --reporter=html --reporter=text-summary`;
-const _TSC_       = `${RootFolder}/node_modules/ttypescript/bin/tsc`;
-const _ESLINT_    = `node ${RootFolder}/node_modules/eslint/bin/eslint.js`
-const _MDLINT_    = `node ${RootFolder}/node_modules/markdownlint-cli/markdownlint.js`
+const _AVA_       = path.join(NodeBin, "ava");
+const _C8_        = path.join(NodeBin, "c8") + " --reporter=lcov --reporter=html --reporter=text-summary";
+const _TSC_       = path.join(NodeBin, "ttsc");
+const _ESLINT_    = path.join(NodeBin, "eslint");
+const _MDLINT_    = path.join(NodeBin, "markdownlint");
 
 // ---------------------------------------------------------------------------------------------------------------------
-const DistPath = (aPath = "") => { return DistFolder + aPath; }
-const RootPath = (aPath = "") => { return RootFolder + aPath; }
-const SrcPath = (aPath = "") => { return SrcFolder + aPath; }
+const DistPath = (aPath = "") => path.join(DistFolder, aPath);
+const RootPath = (aPath = "") => path.join(RootFolder, aPath);
+const SrcPath = (aPath = "") => path.join(SrcFolder, aPath);
 
 const DistDest = (aPath = "") => { return gulp.dest(DistPath(aPath)); }
 const Root = (aPath = "") => { return gulp.src(RootPath(aPath)); }
 const Src = (aPath = "") => { return gulp.src(SrcPath(aPath)); }
 
 // ---------------------------------------------------------------------------------------------------------------------
-gulp.task("clean", done =>
-    {
-        del([DistPath("**/*")], { force: true });
-        done();
-    },
-);
+gulp.task("clean", done => spawnTask(_TSC_, done, ["--build", "--clean"]));
 
 // ---------------------------------------------------------------------------------------------------------------------
-gulp.task("compile", (done) => execTask(_TSC_, done));
+gulp.task("compile", (done) => spawnTask(_TSC_, done, ["--build"]));
 
 // ---------------------------------------------------------------------------------------------------------------------
 gulp.task("copy", gulp.parallel(
-    () => Root("/tsconfig.json").pipe(DistDest()),
-
-    () => Src("/Config/**/*").pipe(DistDest("/Src/Config")),
-    () => Src("/Config/**/.*").pipe(DistDest("/Src/Config")),
+    () => Root("tsconfig.json").pipe(DistDest()),
+    () => Root(path.join("Config", "**", "*")).pipe(DistDest("Config")),
+    () => Root(path.join("Config", "**", ".*")).pipe(DistDest("Config")),
 ));
 
 // ---------------------------------------------------------------------------------------------------------------------
-gulp.task("build", gulp.series("compile", "copy"));
+gulp.task("build", gulp.parallel("compile", "copy"));
 
 // ---------------------------------------------------------------------------------------------------------------------
 gulp.task("eslint-check", done => execTask(`${_ESLINT_} .`, done));
@@ -99,14 +92,18 @@ gulp.task("test", done =>
 {
     const lPathArgs = getArgs()["path"];
     const lFileArgs = getArgs()["file"];
+    process.env.ENV__LOGGING_LEVEL = "OFF";
 
+    let lArgs = [];
     if (lPathArgs !== undefined)
     {
         const allDone = _.after(lPathArgs.length, done);
         lPathArgs.forEach((aPath) =>
         {
-            execTask(getAvaCommand(TestFolder + "/" + aPath) + getAvaArgs("match") + getAvaArgs("serial"), allDone);
+            lArgs = lArgs.concat(getAllTestFiles(path.join(TestFolder, aPath)))
         });
+        lArgs.push("--match");
+        lArgs.push("--serial");
     }
     else if (lFileArgs !== undefined)
     {
@@ -117,12 +114,14 @@ gulp.task("test", done =>
             return;
         }
 
-        execTask(_AVA_ +  " " + lMatchingFiles.join(" "), done);
+        lArgs = lMatchingFiles;
     }
     else
     {
-        execTask(getAvaCommand(TestFolder) + getAvaArgs("match") + getAvaArgs("serial"), done);
+        lArgs = [...getAllTestFiles(TestFolder), "--serial", "--match"];
     }
+
+    spawnTask(_AVA_, done, lArgs);
 });
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -144,7 +143,8 @@ gulp.task("demo", done =>
     }
 
     // run demos
-    execTask(_AVA_ +  " --fail-fast " + lMatchingFiles.join(" "), done);
+    lMatchingFiles.unshift("--fail-fast");
+    spawnTask(_AVA_, done, lMatchingFiles);
 });
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -171,6 +171,34 @@ gulp.task("build-check-test", gulp.series(
 gulp.task("build-lint-test", gulp.task("build-check-test"));
 
 // Helper functions:
+function spawnTask(command, done, args)
+{
+    let lCP;
+    if (args !== undefined)
+    {
+        lCP = spawn(command, args, { stdio: "inherit" });
+    } 
+    else
+    {
+        lCP = spawn(command, { stdio: "inherit" });
+    }
+    
+    let lError = undefined;
+    lCP.on("error", (error) => lError = error);
+    
+    // catch non-zero exit statuses so that CI can understand when task fails
+    lCP.on("close", (code) => {
+        if (lError !== undefined) 
+        { 
+            done(lError);
+        }
+        else
+        {
+            done(code !== 0 ? new Error(`Task returned exit code ${code}`) : code );
+        }
+    })
+}
+
 function execTask(command, done)
 {
     exec(command, (error, sout, serr) =>
@@ -195,26 +223,21 @@ function getMatchingFiles(aFileArgs, aFileType)
     return lMatchingFiles;
 }
 
-function getAllTestFiles(aDirectory)
+function getAllTestFiles(aDirectory, aFilter = "test.js")
 {
+    const lDirFiles = fs.readdirSync(aDirectory);
+
     const lFiles = [];
-    getTestsFromDir(aDirectory);
-
-    function getTestsFromDir(aDirectory)
+    for (const lFileName of lDirFiles)
     {
-        const lDirFiles = fs.readdirSync(aDirectory);
-
-        for (const lFileName of lDirFiles)
+        const lFilePath = path.join(aDirectory, lFileName);
+        if (fs.statSync(lFilePath).isDirectory())
         {
-            const lFilePath = path.join(aDirectory, lFileName);
-            if (fs.statSync(lFilePath).isDirectory())
-            {
-                getTestsFromDir(lFilePath);
-            }
-            else if (lFileName.includes("test.js"))
-            {
-                lFiles.push(lFilePath);
-            }
+            getTestsFromDir(lFilePath);
+        }
+        else if (lFileName.includes(aFilter))
+        {
+            lFiles.push(lFilePath);
         }
     }
 
