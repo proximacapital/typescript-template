@@ -93,8 +93,8 @@ gulp.task("test", done =>
     const lPathArgs = getArgs()["path"];
     const lFileArgs = getArgs()["file"];
     process.env.ENV__LOGGING_LEVEL = "OFF";
-    let lArgs = [];
 
+    let lArgs = [];
     if (lPathArgs !== undefined)
     {
         const allDone = _.after(lPathArgs.length, done);
@@ -120,6 +120,7 @@ gulp.task("test", done =>
     {
         lArgs = [...getAllTestFiles(TestFolder), "--serial", "--match"];
     }
+
     spawnTask(_AVA_, done, lArgs);
 });
 
@@ -182,10 +183,20 @@ function spawnTask(command, done, args)
         lCP = spawn(command, { stdio: "inherit" });
     }
     
-    lCP.on("error", done);
-
-    // catch non-zero exit statii so that CI can understand when task fails
-    lCP.on("close", (code) => done(code !== 0 ? new Error(`Task returned exit code ${code}`) : code ));
+    let lError = undefined;
+    lCP.on("error", (error) => lError = error);
+    
+    // catch non-zero exit statuses so that CI can understand when task fails
+    lCP.on("close", (code) => {
+        if (lError !== undefined) 
+        { 
+            done(lError);
+        }
+        else
+        {
+            done(code !== 0 ? new Error(`Task returned exit code ${code}`) : code );
+        }
+    })
 }
 
 function execTask(command, done)
@@ -216,23 +227,18 @@ function getAllTestFiles(aDirectory, aFilter = "test.js")
 {
     const lFiles = [];
 
-    getTestsFromDir(aDirectory);
+    const lDirFiles = fs.readdirSync(aDirectory);
 
-    function getTestsFromDir(aDirectory)
+    for (const lFileName of lDirFiles)
     {
-        const lDirFiles = fs.readdirSync(aDirectory);
-
-        for (const lFileName of lDirFiles)
+        const lFilePath = path.join(aDirectory, lFileName);
+        if (fs.statSync(lFilePath).isDirectory())
         {
-            const lFilePath = path.join(aDirectory, lFileName);
-            if (fs.statSync(lFilePath).isDirectory())
-            {
-                getTestsFromDir(lFilePath);
-            }
-            else if (lFileName.includes(aFilter))
-            {
-                lFiles.push(lFilePath);
-            }
+            getTestsFromDir(lFilePath);
+        }
+        else if (lFileName.includes(aFilter))
+        {
+            lFiles.push(lFilePath);
         }
     }
 
