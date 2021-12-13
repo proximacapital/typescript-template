@@ -225,10 +225,9 @@ function getMatchingFiles(aFileArgs, aFileType)
 
 function getAllTestFiles(aDirectory, aFilter = "test.js")
 {
-    const lFiles = [];
-
     const lDirFiles = fs.readdirSync(aDirectory);
 
+    const lFiles = [];
     for (const lFileName of lDirFiles)
     {
         const lFilePath = path.join(aDirectory, lFileName);
