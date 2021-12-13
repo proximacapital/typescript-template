@@ -53,8 +53,7 @@
     "lint": "gulp lint",
     "test": "gulp test",
     "coverage": "gulp coverage",
-    "start": "node Dist/Src/App.js",
-    "ts-coverage": "c8 --reporter=lcov --reporter=html --reporter=text-summary ava Test/**/*.test.ts"
+    "start": "node Dist/Src/App.js"
   },
   "eslintConfig": {
     "extends": "@proxima-oss/eslint-config"
