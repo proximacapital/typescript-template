@@ -2,6 +2,7 @@ const fs            = require("fs");
 const path          = require("path");
 const _             = require("lodash");
 const gulp          = require("gulp");
+const del           = require("del");
 const {exec, spawn} = require("child_process");
 
 const RootFolder  = path.join();
@@ -26,7 +27,12 @@ const Root = (aPath = "") => { return gulp.src(RootPath(aPath)); }
 const Src = (aPath = "") => { return gulp.src(SrcPath(aPath)); }
 
 // ---------------------------------------------------------------------------------------------------------------------
-gulp.task("clean", done => spawnTask(_TSC_, done, ["--build", "--clean"]));
+gulp.task("clean", done =>
+    {
+        del([DistPath("**/*")], { force: true });
+        done();
+    },
+);
 
 // ---------------------------------------------------------------------------------------------------------------------
 gulp.task("compile", (done) => spawnTask(_TSC_, done, ["--build"]));
