@@ -223,23 +223,29 @@ function getMatchingFiles(aFileArgs, aFileType)
     return lMatchingFiles;
 }
 
-function getAllTestFiles(aDirectory, aFilter = "test.js")
+function getAllTestFiles(aTopDirectory, aFilter = "test.js")
 {
-    const lDirFiles = fs.readdirSync(aDirectory);
-
+    // getTestsFromDir is called recursively until we run out of directories, this function must have access to lFiles
+    // in its scope during execution. as such it is not save to move it from the getAllTestFiles scope
     const lFiles = [];
-    for (const lFileName of lDirFiles)
+    function getTestsFromDir(aDirectory)
     {
-        const lFilePath = path.join(aDirectory, lFileName);
-        if (fs.statSync(lFilePath).isDirectory())
+        const lDirFiles = fs.readdirSync(aDirectory);
+
+        for (const lFileName of lDirFiles)
         {
-            getTestsFromDir(lFilePath);
-        }
-        else if (lFileName.includes(aFilter))
-        {
-            lFiles.push(lFilePath);
+            const lFilePath = path.join(aDirectory, lFileName);
+            if (fs.statSync(lFilePath).isDirectory())
+            {
+                getTestsFromDir(lFilePath);
+            }
+            else if (lFileName.includes(aFilter))
+            {
+                lFiles.push(lFilePath);
+            }
         }
     }
+    getTestsFromDir(aTopDirectory);
 
     return lFiles;
 }
