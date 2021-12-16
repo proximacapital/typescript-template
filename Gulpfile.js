@@ -109,7 +109,6 @@ gulp.task("test", done =>
             lArgs = lArgs.concat(getAllTestFiles(path.join(TestFolder, aPath)))
         });
         lArgs.push("--match");
-        lArgs.push("--serial");
     }
     else if (lFileArgs !== undefined)
     {
@@ -124,8 +123,10 @@ gulp.task("test", done =>
     }
     else
     {
-        lArgs = [...getAllTestFiles(TestFolder), "--serial", "--match"];
+        lArgs = [...getAllTestFiles(TestFolder)];
     }
+
+    lArgs.push("--verbose");
 
     spawnTask(_AVA_, done, lArgs);
 });
