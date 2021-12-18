@@ -27,7 +27,7 @@ const Root = (aPath = "") => { return gulp.src(RootPath(aPath)); }
 const Src = (aPath = "") => { return gulp.src(SrcPath(aPath)); }
 
 // ---------------------------------------------------------------------------------------------------------------------
-gulp.task("clean", done =>
+gulp.task("clean", (done) =>
     {
         del([DistPath("**/*")], { force: true });
         done();
@@ -48,10 +48,10 @@ gulp.task("copy", gulp.parallel(
 gulp.task("build", gulp.parallel("compile", "copy"));
 
 // ---------------------------------------------------------------------------------------------------------------------
-gulp.task("eslint-check", done => execTask(`${_ESLINT_} .`, done));
-gulp.task("eslint-fix", done => execTask(`${_ESLINT_} . --fix`, done));
-gulp.task("mdlint-check", done => execTask(`${_MDLINT_} .`, done));
-gulp.task("mdlint-fix", done => execTask(`${_MDLINT_} . --fix`, done));
+gulp.task("eslint-check", (done) => execTask(`${_ESLINT_} .`, done));
+gulp.task("eslint-fix", (done) => execTask(`${_ESLINT_} . --fix`, done));
+gulp.task("mdlint-check", (done) => execTask(`${_MDLINT_} .`, done));
+gulp.task("mdlint-fix", (done) => execTask(`${_MDLINT_} . --fix`, done));
 
 gulp.task("lint-check", gulp.parallel("eslint-check", "mdlint-check"));
 gulp.task("lint-fix", gulp.parallel("eslint-fix", "mdlint-fix"));
@@ -94,7 +94,7 @@ function getArgs()
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
-gulp.task("test", done =>
+gulp.task("test", (done) =>
 {
     const lPathArgs = getArgs()["path"];
     const lFileArgs = getArgs()["file"];
@@ -132,7 +132,7 @@ gulp.task("test", done =>
 });
 
 // ---------------------------------------------------------------------------------------------------------------------
-gulp.task("demo", done =>
+gulp.task("demo", (done) =>
 {
     // get file name args
     const lFileArgs = getArgs()["file"];
@@ -155,7 +155,7 @@ gulp.task("demo", done =>
 });
 
 // ---------------------------------------------------------------------------------------------------------------------
-gulp.task("coverage", done => execTask(`${_C8_} ${_AVA_} Test/**/*.test.ts`, done));
+gulp.task("coverage", (done) => execTask(`${_C8_} ${_AVA_} Test/**/*.test.ts`, done));
 
 // ---------------------------------------------------------------------------------------------------------------------
 gulp.task("start", (done) =>
