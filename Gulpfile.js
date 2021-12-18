@@ -1,3 +1,4 @@
+const util          = require("util");
 const fs            = require("fs");
 const path          = require("path");
 const _             = require("lodash");
@@ -25,6 +26,23 @@ const SrcPath = (aPath = "") => path.join(SrcFolder, aPath);
 const DistDest = (aPath = "") => { return gulp.dest(DistPath(aPath)); }
 const Root = (aPath = "") => { return gulp.src(RootPath(aPath)); }
 const Src = (aPath = "") => { return gulp.src(SrcPath(aPath)); }
+
+// ---------------------------------------------------------------------------------------------------------------------
+gulp.task("check-node", (done) =>
+{
+    const lExpected = fs.readFileSync(`${RootFolder}/.nvmrc`).toString();
+    const lActual = process.version;
+
+    if (lActual.trim() !== lExpected.trim())
+    {
+        console.log("INVALID NODE VERSION");
+        console.log("EXPECTED:", lExpected);
+        console.log("RECEIVED:", lActual);
+        done(-1);
+    }
+
+    done(0);
+});
 
 // ---------------------------------------------------------------------------------------------------------------------
 gulp.task("clean", (done) =>
