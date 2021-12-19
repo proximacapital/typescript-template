@@ -24,20 +24,9 @@
     ]
   },
   "c8": {
-    "check-coverage": false,
     "all": true,
     "include": [
-      "**/*.ts"
-    ],
-    "exclude": [
-      "coverage/**",
-      "node_modules/**",
-      "Dist/**",
-      "**/*.test.ts",
-      "**/*.demo.ts",
-      "**/*.perf.ts",
-      "**/*.network.ts",
-      "**/*.data.ts"
+      "Src"
     ],
     "reporter": [
       "html",
