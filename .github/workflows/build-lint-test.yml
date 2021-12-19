@@ -16,7 +16,7 @@ jobs:
     steps:
     - name: Checkout Source
       uses: actions/checkout@afe4af09a72596f47d806ee5f8b2674ec07fdc73
-      with: 
+      with:
           fetch-depth: 0
 
     - name: Load .nvmrc
