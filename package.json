@@ -37,7 +37,7 @@
   },
   "scripts": {
     "preinstall": "gulp check-node",
-    "reinstall": "rm -rf node_modules package-lock.json && npm i",
+    "reinstall": "rm -rf node_modules package-lock.json && npm install",
     "compile": "gulp build",
     "build": "gulp build",
     "lint": "gulp lint",
