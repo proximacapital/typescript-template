@@ -14,6 +14,19 @@
   "files": [
     "Dist"
   ],
+  "scripts": {
+    "preinstall": "gulp check-node",
+    "reinstall": "rm -rf node_modules package-lock.json && npm install",
+    "compile": "gulp build",
+    "build": "gulp build",
+    "lint": "gulp lint",
+    "test": "gulp test",
+    "coverage": "gulp coverage",
+    "start": "node Dist/Src/App.js"
+  },
+  "eslintConfig": {
+    "extends": "@proxima-oss/eslint-config"
+  },
   "ava": {
     "extensions": [
       "ts",
@@ -34,19 +47,6 @@
       "text",
       "text-summary"
     ]
-  },
-  "scripts": {
-    "preinstall": "gulp check-node",
-    "reinstall": "rm -rf node_modules package-lock.json && npm install",
-    "compile": "gulp build",
-    "build": "gulp build",
-    "lint": "gulp lint",
-    "test": "gulp test",
-    "coverage": "gulp coverage",
-    "start": "node Dist/Src/App.js"
-  },
-  "eslintConfig": {
-    "extends": "@proxima-oss/eslint-config"
   },
   "dependencies": {
     "lodash": "4.17.21"
