@@ -15,7 +15,7 @@
     "Dist"
   ],
   "scripts": {
-    "preinstall": "gulp check-node",
+    "preinstall": "! command -v gulp && echo 'WARN: MISSING GULP' || gulp check-node",
     "reinstall": "rm -rf node_modules package-lock.json && npm install",
     "compile": "gulp build",
     "build": "gulp build",
