@@ -16,7 +16,7 @@ import {
     MDLintCheck,
     MDLintFix,
     Test,
-} from "@proximacapital/slurpy";
+} from "@proximacapital/gulp-tasks";
 import gulp, { TaskFunctionCallback } from "gulp";
 
 gulp.task("check-node", CheckNode);
