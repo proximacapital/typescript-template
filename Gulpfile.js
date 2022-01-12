@@ -69,8 +69,9 @@ gulp.task("eslint-check", (done) => execTask(`${_ESLINT_} .`, done));
 gulp.task("eslint-fix", (done) => execTask(`${_ESLINT_} . --fix`, done));
 gulp.task("mdlint-check", (done) => execTask(`${_MDLINT_} .`, done));
 gulp.task("mdlint-fix", (done) => execTask(`${_MDLINT_} . --fix`, done));
+gulp.task("commitlint-check", (done) => execTask(`git log -1 --pretty=format:'%s' | npx commitlint`, done));
 
-gulp.task("lint-check", gulp.parallel("eslint-check", "mdlint-check"));
+gulp.task("lint-check", gulp.parallel("eslint-check", "mdlint-check", "commitlint-check"));
 gulp.task("lint-fix", gulp.parallel("eslint-fix", "mdlint-fix"));
 gulp.task("lint", gulp.task("lint-check"));
 
