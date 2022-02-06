@@ -1,3 +1,7 @@
+// NB: must be called first to set the root dir for all relative paths
+import { SetRoot } from "@proxima-oss/gulp-tasks/Dist/Src/SetPath";
+SetRoot(__dirname);
+
 import {
     Build,
     BuildCheckTest,

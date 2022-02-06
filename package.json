@@ -53,9 +53,10 @@
   },
   "devDependencies": {
     "@proxima-oss/eslint-config": "5.1.0",
-    "@proxima-oss/gulp-tasks": "1.0.2",
+    "@proxima-oss/gulp-tasks": "github:proximacapital/gulp-tasks#feat/setup-root-path",
     "@types/gulp": "4.0.9",
     "@types/lodash": "4.14.178",
+    "@types/mocha": "9.1.0",
     "ava": "4.0.1",
     "c8": "7.11.0",
     "del": "6.0.0",
