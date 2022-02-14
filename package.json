@@ -16,12 +16,11 @@
   ],
   "scripts": {
     "reinstall": "rm -rf node_modules package-lock.json && npm install",
-    "compile": "gulp build",
+    "compile": "npm run build",
     "build": "gulp build",
     "lint": "gulp lint",
     "test": "gulp test",
-    "coverage": "gulp coverage",
-    "start": "node Dist/Src/App.js"
+    "coverage": "gulp coverage"
   },
   "eslintConfig": {
     "parserOptions": {
