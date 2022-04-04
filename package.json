@@ -61,7 +61,7 @@
     "@proxima-oss/eslint-config": "6.0.0",
     "@proxima-oss/gulp-tasks": "2.0.0",
     "@types/gulp": "4.0.9",
-    "@types/lodash": "4.14.178",
+    "@types/lodash": "4.14.181",
     "ava": "4.0.1",
     "c8": "7.11.0",
     "del": "6.0.0",
