@@ -29,6 +29,6 @@
             "@Root/*": ["./*"]
         }
     },
-    "include": ["Src", "Test", "Config"],
+    "include": ["Src", "Test", "Config", "Gulpfile.ts"],
     "exclude": []
 }
