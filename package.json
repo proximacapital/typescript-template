@@ -59,7 +59,7 @@
   },
   "devDependencies": {
     "@proxima-oss/eslint-config": "6.0.0",
-    "@proxima-oss/gulp-tasks": "2.0.0",
+    "@proxima-oss/gulp-tasks": "3.0.2",
     "@types/gulp": "4.0.9",
     "@types/lodash": "4.14.178",
     "ava": "4.0.1",
