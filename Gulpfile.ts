@@ -40,6 +40,6 @@ gulp.task("start", (done: TaskFunctionCallback): void =>
 });
 
 // ***** Aliases *****
-gulp.task("tests-all", gulp.task("test"));
+gulp.task("tests-all", Test);
 gulp.task("build-test", BuildTest);
 gulp.task("build-lint-test", BuildCheckTest);
