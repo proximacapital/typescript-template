@@ -2,7 +2,6 @@ import {
     Build,
     BuildCheckTest,
     BuildTest,
-    CheckNode,
     Clean,
     Compile,
     Copy,
@@ -21,7 +20,6 @@ import gulp, { TaskFunctionCallback } from "gulp";
 
 // ***** Base Tasks *****
 gulp.task("build", Build);
-gulp.task("check-node", CheckNode);
 gulp.task("clean", Clean);
 gulp.task("compile", Compile);
 gulp.task("coverage", Coverage);
@@ -42,6 +40,6 @@ gulp.task("start", (done: TaskFunctionCallback): void =>
 });
 
 // ***** Aliases *****
-gulp.task("tests-all", gulp.task("test"));
+gulp.task("tests-all", Test);
 gulp.task("build-test", BuildTest);
 gulp.task("build-lint-test", BuildCheckTest);
